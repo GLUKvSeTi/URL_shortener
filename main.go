@@ -23,14 +23,11 @@ func (us *URLShortener) HandleShorten(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generate a unique shortened key for the original URL
 	shortKey := generateShortKey()
 	us.urls[shortKey] = originalURL
 
-	// Construct the full shortened URL
 	shortenedURL := fmt.Sprintf("http://localhost:8080/short/%s", shortKey)
 
-	// Render the HTML response with the shortened URL
 	w.Header().Set("Content-Type", "text/html")
 	responseHTML := fmt.Sprintf(`
         <h2>URL Shortener</h2>
@@ -51,14 +48,12 @@ func (us *URLShortener) HandleRedirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Retrieve the original URL from the `urls` map using the shortened key
 	originalURL, found := us.urls[shortKey]
 	if !found {
 		http.Error(w, "Shortened key not found", http.StatusNotFound)
 		return
 	}
 
-	// Redirect the user to the original URL
 	http.Redirect(w, r, originalURL, http.StatusMovedPermanently)
 }
 
@@ -75,6 +70,7 @@ func generateShortKey() string {
 }
 
 func main() {
+	test()
 	shortener := &URLShortener{
 		urls: make(map[string]string),
 	}
